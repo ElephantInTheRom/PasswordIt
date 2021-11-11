@@ -33,7 +33,7 @@ namespace PasswordItBackend
         public string GetFormattedSessionList()
         {
             User[] list = (from user in SessionUsers
-                          orderby user.Username descending
+                          orderby user.Username ascending
                           select user).ToArray();
             string output = "";
             foreach(User user in list)
@@ -79,6 +79,33 @@ namespace PasswordItBackend
                 }
             }
             user = null;
+            return false;
+        }
+
+        //Removing users from the list
+        public bool RemoveUser(int id)
+        {
+            foreach (User u in SessionUsers)
+            {
+                if (u.UserID == id)
+                {
+                    SessionUsers.Remove(u);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool RemoveUser(string username)
+        {
+            foreach (User u in SessionUsers)
+            {
+                if (u.Username == username)
+                {
+                    SessionUsers.Remove(u);
+                    return true;
+                }
+            }
             return false;
         }
     }

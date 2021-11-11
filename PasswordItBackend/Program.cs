@@ -11,7 +11,8 @@ using PasswordItBackend;
 
 SessionManager session = new();
 
-Console.WriteLine("Welcome to PasswordIt! Type 'c' to create a new user. Type 'l' to list all users. Type 'e' to exit.");
+Console.WriteLine("Welcome to PasswordIt! \nType 'c' to create a new user. \nType 'l' to list all users. \nType 'e' to exit." +
+    " \nType 'r <id>' to remove a user. \nType 's <id> to show a specific user.'");
 
 while(true)
 {
@@ -34,6 +35,29 @@ while(true)
             break;
         }
     }
+}
+
+//s 1235
+//012345
+//6 - 4
+
+void ShowUser(string command)
+{
+    int id;
+    if(command.Length >= 5 && int.TryParse(command[(command.Length - 4)..], out id))
+    {
+
+    }
+    else
+    {
+        Console.WriteLine("Not a valid user id");
+    }
+    
+}
+
+void RemoveLoser(string command)
+{
+
 }
 
 void CreateUser()
