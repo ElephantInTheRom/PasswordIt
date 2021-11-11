@@ -29,7 +29,7 @@ namespace PasswordItBackend.Systems
             {
                 newid = random.Next(1000, 10000); //This gives 9,000 possible IDs
             }
-            while (!ActiveIDs.Contains(newid));
+            while (ActiveIDs.Contains(newid));
             return newid;
         }
 

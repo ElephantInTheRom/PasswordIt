@@ -33,5 +33,6 @@ namespace PasswordItBackend.Objects
             
         }
 
+        public override string ToString() => $"Name: {Username}, ID: {UserID}, Key: {UserKey}, # of entries: {Entries.Count}";
     }
 }
