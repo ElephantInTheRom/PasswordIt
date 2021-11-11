@@ -33,6 +33,13 @@ namespace PasswordItBackend.Objects
             
         }
 
+        public bool AddEntry(string? title, string entryUsername, string entryPassword)
+        {
+            LoginEntry entry;
+            //This should be where encoding and decoding of entry data takes place, once it is ready
+            Entries.Add(new LoginEntry())
+        }
+
         public override string ToString() => $"Name: {Username}, ID: {UserID}, Key: {UserKey}, # of entries: {Entries.Count}";
     }
 }
