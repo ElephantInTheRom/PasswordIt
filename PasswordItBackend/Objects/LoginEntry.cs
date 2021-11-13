@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace PasswordItBackend.Objects
 {
@@ -14,12 +15,14 @@ namespace PasswordItBackend.Objects
         //but it should know whether or not it is scrambled
 
         //An entry can contain an empty description and username if they are not needed
-        public LoginEntry(string? title, string username, string password, bool scrambled)
+        [JsonConstructor]
+
+        public LoginEntry(string? title, string username, string password, bool datascrambled)
         {
             Title = title;
             Username = username;
             Password = password;
-            DataScrambled = scrambled;
+            DataScrambled = datascrambled;
         }
 
         //Data editing methods

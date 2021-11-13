@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace PasswordItBackend.Objects
 {
@@ -13,6 +14,16 @@ namespace PasswordItBackend.Objects
         public List<LoginEntry> Entries { get; private set; }
 
         //Constructor
+        [JsonConstructor]
+        public User(string username, int userid, string userkey, List<LoginEntry> entries)
+        {
+            //This constructor will be used by the json deserializer
+            Console.WriteLine("Constructor called by deserializer!");
+            Username = username;
+            UserID = userid;
+            UserKey = userkey;
+            Entries = entries;
+        }
         public User(string username, int id, string key, bool newuser)
         {
             //User is not responsible for generating own ID, as it should be handled by

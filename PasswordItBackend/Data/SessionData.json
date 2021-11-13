@@ -1,0 +1,46 @@
+[
+  {
+    "Username": "Hayden",
+    "UserID": 5433,
+    "UserKey": "apple",
+    "Entries": [
+      {
+        "Title": "Amazon",
+        "Username": "HaydenCJ",
+        "Password": "marbles123",
+        "DataScrambled": false
+      },
+      {
+        "Title": "Discord",
+        "Username": "Elephant",
+        "Password": "cookie123",
+        "DataScrambled": false
+      },
+      {
+        "Title": "Google",
+        "Username": "haydenJ",
+        "Password": "cookie715",
+        "DataScrambled": false
+      }
+    ]
+  },
+  {
+    "Username": "Brooke",
+    "UserID": 1260,
+    "UserKey": "bee",
+    "Entries": [
+      {
+        "Title": "Amazon",
+        "Username": "QueenB",
+        "Password": "bee412",
+        "DataScrambled": false
+      }
+    ]
+  },
+  {
+    "Username": "Jessica",
+    "UserID": 8360,
+    "UserKey": "music",
+    "Entries": []
+  }
+]

@@ -6,10 +6,27 @@ using PasswordItBackend.Systems;
 
 namespace PasswordItBackend
 {
+    /// <summary>
+    /// Session manager holds data about all the user profiles stored in this session. 
+    /// Also holds behavior for setting up new user profiles and making sure all the data accosiated is correct. 
+    /// </summary>
+    //Should this class be static? it works as non static but there will only need to be one reference
     public class SessionManager
     {
-        //Session lists
-        public static List<User> SessionUsers { get; private set; } = new();
+        // - - Data - - 
+        public List<User> SessionUsers { get; private set; }
+        public int UserCount { get { return SessionUsers.Count; } }
+
+        // - - Constructors - - 
+        public SessionManager()
+        {
+            SessionUsers = new();
+        }
+
+        public SessionManager(List<User> userData)
+        {
+            SessionUsers = userData;
+        }
 
         /// <summary>
         /// Create a new user and add it to the session list of users.

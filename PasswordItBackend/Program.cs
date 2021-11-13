@@ -1,32 +1,35 @@
-﻿// See https://aka.ms/new-console-template for more information
-using PasswordItBackend;
+﻿using PasswordItBackend;
 using PasswordItBackend.Objects;
+using PasswordItBackend.Systems;
+using static PasswordItBackend.CommandConfig;
 
-/* List of needs:
- * Create users
- * List session users
- * Enter into a user: add entries, remove entries and edit entries
- * Exit user and select new ones
-*/
-
-
-SessionManager session = new();
+//fields used by the executing program
 bool editingUser = false;
 User? selectedUser = null;
+string saveFilePath = DataPaths.DataDirectory + @"SessionData.json";
+SessionManager session;
 
-Console.WriteLine("Welcome to PasswordIt! \nType 'c' to create a new user. \nType 'l' to list all users. \nType 'e' to exit." +
-    " \nType 'r <id>' to remove a user. \nType 's <id> to select a specific user.'");
+//Try-catch for loading data, injects starting data into the session if the save file is gone somehow
+try
+{
+    session = new SessionManager(FileManager.LoadUserdata(saveFilePath));
+}
+catch (FileNotFoundException ex) 
+{
+    Console.WriteLine($"No data file - {ex.FileName} -  was found, starting with test data.");
+    session = new();
+    //This is probably not good practice for exception handling, but its good for testing
+    var u1 = session.CreateUser("Hayden", "apple");
+    var u2 = session.CreateUser("Brooke", "bee");
+    var u3 = session.CreateUser("Jessica", "music");
+    //Add entries to thes users to start with
+    u1.AddEntry("Amazon", "HaydenCJ", "marbles123");
+    u1.AddEntry("Discord", "Elephant", "cookie123");
+    u1.AddEntry("Google", "haydenJ", "cookie715");
+    u2.AddEntry("Amazon", "QueenB", "bee412");
+}
 
-//Create users to start with
-var u1 = session.CreateUser("Hayden", "apple");
-var u2 = session.CreateUser("Brooke", "bee");
-var u3 = session.CreateUser("Jessica", "music");
-//Add entries to thes users to start with
-u1.AddEntry("Amazon", "HaydenCJ", "marbles123");
-u1.AddEntry("Discord", "Elephant", "cookie123");
-u1.AddEntry("Google", "haydenJ", "cookie715");
-u2.AddEntry("Amazon", "QueenB", "bee412");
-
+Console.WriteLine(programWelcome);
 
 while (true)
 {
@@ -35,10 +38,10 @@ while (true)
     {
         if(editingUser)
         {
-            if(command[0] == 'a') { AddEntry(); }
-            else if(command[0] == 'r') { RemoveEntry(command); }
-            else if(command[0] == 'l') { ListEntries(); }
-            else if(command[0] == 'e')
+            if(command[0] == cmdNew) { AddEntry(); }
+            else if(command[0] == cmdRemove) { RemoveEntry(command); }
+            else if(command[0] == cmdList) { ListEntries(); }
+            else if(command[0] == cmdExit)
             {
                 Console.WriteLine("No longer editing user");
                 editingUser = false;
@@ -47,13 +50,16 @@ while (true)
         }
         else
         {
-            if (command[0] == 'c') { CreateUser(); }
-            else if (command[0] == 'l') { ListUsers(); }
-            else if (command[0] == 's') { SelectUser(command); }
-            else if (command[0] == 'r') { RemoveUser(command); }
-            else if (command[0] == 'e')
+            if (command[0] == cmdNew) { CreateUser(); }
+            else if (command[0] == cmdList) { ListUsers(); }
+            else if (command[0] == cmdSelect) { SelectUser(command); }
+            else if (command[0] == cmdRemove) { RemoveUser(command); }
+            else if (command[0] == cmdExit)
             {
                 Console.WriteLine("Exiting program . . .");
+                //Save data to a file
+                
+                FileManager.SaveSession(saveFilePath, session);
                 break;
             }
         }
@@ -136,8 +142,7 @@ void SelectUser(string command)
         if(session.GetUser(id, out user))
         {
             Console.WriteLine($"Now editing the user: {user.Username} <{user.UserID}>.");
-            Console.WriteLine($"Type 'a' to add an entry. \nType 'r <number>' to remove an entry. \nType 'l' to list entries. " +
-                $"\nType 'e' to exit editing user");
+            Console.WriteLine(userEditWelcome);
             editingUser = true;
             selectedUser = user;
         }
