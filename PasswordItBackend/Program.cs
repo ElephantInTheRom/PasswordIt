@@ -22,11 +22,13 @@ catch (FileNotFoundException ex)
     var u1 = session.CreateUser("Hayden", "apple");
     var u2 = session.CreateUser("Brooke", "bee");
     var u3 = session.CreateUser("Jessica", "music");
-    //Add entries to thes users to start with
+    var u4 = session.CreateUser("Jason", "volvo");
+    //Add entries to these users to start with
     u1.AddEntry("Amazon", "HaydenCJ", "marbles123");
     u1.AddEntry("Discord", "Elephant", "cookie123");
     u1.AddEntry("Google", "haydenJ", "cookie715");
     u2.AddEntry("Amazon", "QueenB", "bee412");
+    u4.AddEntry(null, "lazyj", "guitar123");
 }
 
 Console.WriteLine(programWelcome);

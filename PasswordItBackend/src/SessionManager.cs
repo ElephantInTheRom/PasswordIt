@@ -37,7 +37,7 @@ namespace PasswordItBackend
         public User CreateUser(string username, string userkey)
         {
             int id = UserIDManager.GenerateUniqueID();
-            User newUser = new User(username, id, userkey, true);
+            User newUser = new User(username, id, userkey);
             SessionUsers.Add(newUser);
             return newUser;
         }

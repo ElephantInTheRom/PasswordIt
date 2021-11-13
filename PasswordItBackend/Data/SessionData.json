@@ -1,7 +1,7 @@
 [
   {
     "Username": "Hayden",
-    "UserID": 5433,
+    "UserID": 1256,
     "UserKey": "apple",
     "Entries": [
       {
@@ -26,7 +26,7 @@
   },
   {
     "Username": "Brooke",
-    "UserID": 1260,
+    "UserID": 6711,
     "UserKey": "bee",
     "Entries": [
       {
@@ -39,8 +39,34 @@
   },
   {
     "Username": "Jessica",
-    "UserID": 8360,
+    "UserID": 8750,
     "UserKey": "music",
+    "Entries": [
+      {
+        "Title": "Discord",
+        "Username": "jessica",
+        "Password": "turtle",
+        "DataScrambled": false
+      }
+    ]
+  },
+  {
+    "Username": "Jason",
+    "UserID": 2380,
+    "UserKey": "volvo",
+    "Entries": [
+      {
+        "Title": "New Entry",
+        "Username": "lazyj",
+        "Password": "guitar123",
+        "DataScrambled": false
+      }
+    ]
+  },
+  {
+    "Username": "Andrew",
+    "UserID": 3284,
+    "UserKey": "bike",
     "Entries": []
   }
 ]

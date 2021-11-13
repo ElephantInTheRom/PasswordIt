@@ -24,23 +24,12 @@ namespace PasswordItBackend.Objects
             UserKey = userkey;
             Entries = entries;
         }
-        public User(string username, int id, string key, bool newuser)
+        public User(string username, int id, string key)
         {
-            //User is not responsible for generating own ID, as it should be handled by
-            //The same classes that keep overall record data
+            Entries = new();
             Username = username;
             UserID = id;
-            UserKey = key;
-            if(newuser)
-            {
-                Entries = new List<LoginEntry>();
-                //Some code to tell the system a new user has been created
-            }
-            else
-            {
-                //Some code that retrives this users data from the provided ID and name
-                Console.WriteLine("Not implemented yet!");
-            }
+            UserKey = key;         
         }
         
         //Methods for editing the users entry list
