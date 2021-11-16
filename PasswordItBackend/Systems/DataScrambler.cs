@@ -61,11 +61,11 @@ namespace PasswordItBackend.Systems
             {
                 output += $"{num}{FormattedDataSeperator}";
             }
+            Console.WriteLine($"Completed scramble, input data: {data} - Output data: {output}");
             return output; //Output should look like this - "turtle123" - :45:25:89:18:99:
         }
 
-        //This needs to return a string? 
-        public static int UnscrambleOnKey(string data, string key)
+        public static string? UnscrambleOnKey(string data, string key)
         {
             if (data == null || data.Length > 1 || key == null || key.Length > 1)
             {
@@ -78,7 +78,8 @@ namespace PasswordItBackend.Systems
             //Seperate scrambled data into values
             string[] dataSplit = data.Split(FormattedDataSeperator);
 
-            return dataSplit.Length;
+
+            return dataSplit.ToString();
         }
     }
 }
