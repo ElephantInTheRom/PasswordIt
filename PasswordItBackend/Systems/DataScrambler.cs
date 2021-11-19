@@ -18,7 +18,7 @@ namespace PasswordItBackend.Systems
 
         //Charcter collections for scrambling use
         //When processing char values as numbers, all values have to be >1
-        private const string AllowedChars = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!?@#$%^&*()-_+=\,.:;<>~`";
+        private const string AllowedChars = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!?@#$%^&*()-_+=/,.:;<>~`";
         private static Dictionary<char, int> CharTable;
         private const char FormattedDataSeperator = ':';
 
@@ -34,13 +34,26 @@ namespace PasswordItBackend.Systems
 
         //Methods for confirming or comparing data
         public static bool CharAllowed(char c) => AllowedChars.Contains(c);
+        public static bool StringAllowed(string s)
+        {
+            foreach(char c in s)
+            {
+                if (!CharAllowed(c)) { return false; }              
+            }
+            return true;
+        }
 
         //Methods for scrambling or unscrambling data
         public static string? ScrambleOnKey(string data, string key)
         {
-            if(data == null || data.Length > 1 || key == null || key.Length > 1)
+            if(data == null || data.Length < 1 || key == null || key.Length < 1)
             {
                 Console.WriteLine("Data provided to scrambler is empty.");
+                return null;
+            }
+            else if(!StringAllowed(key) || !StringAllowed(data))
+            {
+                Console.WriteLine("The provided data contains illegal characters");
                 return null;
             }
             //Convert key into an array of values based on the table
@@ -61,25 +74,38 @@ namespace PasswordItBackend.Systems
             {
                 output += $"{num}{FormattedDataSeperator}";
             }
-            Console.WriteLine($"Completed scramble, input data: {data} - Output data: {output}");
-            return output; //Output should look like this - "turtle123" - :45:25:89:18:99:
+            return output;
         }
 
         public static string? UnscrambleOnKey(string data, string key)
         {
-            if (data == null || data.Length > 1 || key == null || key.Length > 1)
+            if (data == null || data.Length < 1 || key == null || key.Length < 1)
             {
                 Console.WriteLine("Data provided to scrambler is empty.");
-                //return null;
+                return null;
             }
             //Convert key into an array of values based on the table
             int[] keyValues = new int[key.Length];
             for (int i = 0; i < key.Length; i++) { keyValues[i] = CharTable[key[i]]; }
-            //Seperate scrambled data into values
-            string[] dataSplit = data.Split(FormattedDataSeperator);
-
-
-            return dataSplit.ToString();
+            //Seperate scrambled data into values            
+            string[] dataSplit = data.Split(FormattedDataSeperator, StringSplitOptions.RemoveEmptyEntries);
+            //Parse split data into values
+            int[] dataValues = new int[dataSplit.Length];
+            for(int i = 0; i < dataSplit.Length; i++)
+            {
+                dataValues[i] = int.Parse(dataSplit[i]);
+            }
+            //Decode each letter and add to output string
+            string output = "";
+            int keyIndex = 0;
+            for(int i = 0; i < dataValues.Length; i++)
+            {
+                if(keyIndex >= keyValues.Length) { keyIndex = 0; }
+                output += AllowedChars[(dataValues[i] / keyValues[keyIndex]) - 2];
+                keyIndex++;
+            }
+            //Return result
+            return output;
         }
     }
 }
