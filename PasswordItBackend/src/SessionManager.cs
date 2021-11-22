@@ -36,10 +36,23 @@ namespace PasswordItBackend
         /// <returns>The newly created user.</returns>
         public User CreateUser(string username, string userkey)
         {
-            int id = UserIDManager.GenerateUniqueID();
-            User newUser = new User(username, id, userkey);
+            User newUser = new User(username, userkey);
             SessionUsers.Add(newUser);
             return newUser;
+        }
+
+        //Closing out user data
+        public void SealAndSaveSession(string filepath)
+        {
+            //Encode all user data
+            foreach(var user in SessionUsers)
+            {
+                user.EncodeAndDevalidate();
+            }
+            //Save list of users to the specified save file
+            FileManager.SaveList(filepath, SessionUsers);
+            //Send out program ending events
+            Console.WriteLine("Data encoded and saved successfully");
         }
 
         //Retriving users

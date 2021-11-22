@@ -8,9 +8,16 @@ namespace PasswordItBackend.Systems
 {
     public static class FileManager
     {
-        public static void SaveSession(string filepath, SessionManager session) => SaveUserdata(filepath, session.SessionUsers);
+        //There may not end up being a reason to save a session once the UI is done, keep checking on this
+        public static void SaveSession(string filepath, SessionManager session) => SaveList<User>(filepath, session.SessionUsers);
 
-        public static void SaveUserdata(string filepath, List<User> userData)
+        /// <summary>
+        /// Formats and saves a list into a json file at the specified path, used for any lists that need to be saved
+        /// </summary>
+        /// <typeparam name="T">The type that is stored in the list.</typeparam>
+        /// <param name="filepath">The path of the file (with extension) to save to.</param>
+        /// <param name="userData">The provided list to save.</param>
+        public static void SaveList<T>(string filepath, List<T> userData)
         {
             try
             {
@@ -18,32 +25,32 @@ namespace PasswordItBackend.Systems
                 JsonSerializerOptions options = new JsonSerializerOptions() { 
                     WriteIndented = true                    
                 };
-                string jsonraw = JsonSerializer.Serialize(userData, options);
+                string jsonraw = JsonSerializer.Serialize<List<T>>(userData, options);
                 File.WriteAllText(filepath, jsonraw);
             }
             catch(DirectoryNotFoundException ex)
             {
-                //If an incorrect directory was given, must be corrected at higher level
+                //If an incorrect directory was given, needs to save to a default path, remember to set this up
                 Console.WriteLine($"Cannot write to that directory -{ex.Message}- saving to default path.");
                 throw;
             }
         }
 
         /// <summary>
-        /// Returns a list of users with all their saved data from the filepath given
+        /// Returns a list storing any type from the requested file path. 
         /// </summary>
-        /// <exception cref="FileNotFoundException"></exception>
-        /// <exception cref="JsonException"></exception>
-        /// <returns>The list of users</returns>
-        public static List<User> LoadUserdata(string filepath)
+        /// <typeparam name="T">The type that should be in the list</typeparam>
+        /// <param name="filepath">The full path of the file to read from (with extension)</param>
+        /// <returns>The list containing the type T</returns>
+        public static List<T> LoadList<T>(string filepath)
         {
             try
             {
                 string jsonraw = File.ReadAllText(filepath);
-                User[]? userdata = JsonSerializer.Deserialize<User[]>(jsonraw);
+                T[]? userdata = JsonSerializer.Deserialize<T[]>(jsonraw);
                 if(userdata != null) 
                 {
-                    return new List<User>(userdata);
+                    return new List<T>(userdata);
                 }
                 else
                 {

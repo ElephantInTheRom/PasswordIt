@@ -60,8 +60,7 @@ while (true)
             {
                 Console.WriteLine("Exiting program . . .");
                 //Save data to a file
-                
-                FileManager.SaveSession(saveFilePath, session);
+                session.SealAndSaveSession(saveFilePath);
                 break;
             }
         }
