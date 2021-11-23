@@ -7,12 +7,12 @@ using static PasswordItBackend.CommandConfig;
 bool editingUser = false;
 User? selectedUser = null;
 string saveFilePath = DataPaths.DataDirectory + @"SessionData.json";
-SessionManager session;
+SessionManager session = new SessionManager();
 
 //Try-catch for loading data, injects starting data into the session if the save file is gone somehow
 try
 {
-    session = new SessionManager(FileManager.LoadUserdata(saveFilePath));
+    session.OpenSessionFromFile(saveFilePath);
 }
 catch (FileNotFoundException ex) 
 {
@@ -65,7 +65,7 @@ while (true)
             }
         }
 
-        Console.WriteLine("\n");
+        Console.WriteLine("");
     }
 }
 
@@ -142,6 +142,23 @@ void SelectUser(string command)
     {
         if(session.GetUser(id, out user))
         {
+            //Enter the password for the user
+            if(!user.UserValidated)
+                Console.WriteLine("Please enter the users password: ");
+            while (!user.UserValidated)
+            {               
+                string? key = Console.ReadLine();
+                if(key != null && user.UnlockUser(key))
+                {
+                    Console.WriteLine("Correct key given.");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Incorrect password. Please try again: ");
+                }
+            }
+            //After key has been given
             Console.WriteLine($"Now editing the user: {user.Username} <{user.UserID}>.");
             Console.WriteLine(userEditWelcome);
             editingUser = true;
@@ -155,8 +172,7 @@ void SelectUser(string command)
     else
     {
         Console.WriteLine("Not a valid user id");
-    }
-    
+    }  
 }
 
 //Editing and accessing the list of users
@@ -198,5 +214,5 @@ void CreateUser()
 
 void ListUsers()
 {
-    Console.WriteLine(session.GetFormattedSessionList());
+    Console.Write(session.GetFormattedSessionList());
 }

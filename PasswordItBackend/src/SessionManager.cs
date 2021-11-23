@@ -28,35 +28,32 @@ namespace PasswordItBackend
             SessionUsers = userData;
         }
 
-        /// <summary>
-        /// Create a new user and add it to the session list of users.
-        /// </summary>
-        /// <param name="username">The username for the account.</param>
-        /// <param name="userkey">The encoding and decoding key for the account.</param>
-        /// <returns>The newly created user.</returns>
-        public User CreateUser(string username, string userkey)
+        
+
+        // - - Closing and opening up user data - - 
+        public void OpenSessionFromFile(string filepath)
         {
-            User newUser = new User(username, userkey);
-            SessionUsers.Add(newUser);
-            return newUser;
+            SessionUsers = FileManager.LoadList<User>(filepath);
+            //Do some exception handling here         
         }
 
-        //Closing out user data
         public void SealAndSaveSession(string filepath)
         {
             //Encode all user data
             foreach(var user in SessionUsers)
             {
-                user.EncodeAndDevalidate();
+                user.LockUser();
             }
             //Save list of users to the specified save file
             FileManager.SaveList(filepath, SessionUsers);
+            UserIDManager.SaveIDList();
             //Send out program ending events
             Console.WriteLine("Data encoded and saved successfully");
         }
 
-        //Retriving users
+        // - - Retriving the list - - 
         public User[] GetSessionList() => SessionUsers.ToArray();
+
         /// <summary>
         /// Gets a string with a list of all users in alphebetical order and formatted to be readable.
         /// </summary>
@@ -71,6 +68,20 @@ namespace PasswordItBackend
                 output += user.ToString() + "\n";
             }
             return output;
+        }
+
+        // - - Editing user list - - 
+        /// <summary>
+        /// Create a new user and add it to the session list of users.
+        /// </summary>
+        /// <param name="username">The username for the account.</param>
+        /// <param name="userkey">The encoding and decoding key for the account.</param>
+        /// <returns>The newly created user.</returns>
+        public User CreateUser(string username, string userkey)
+        {
+            User newUser = new User(username, userkey);
+            SessionUsers.Add(newUser);
+            return newUser;
         }
 
         /// <summary>
@@ -92,45 +103,17 @@ namespace PasswordItBackend
             user = null;
             return false;
         }
-        /// <summary>
-        /// Gets a user by its name, if two accounts share the same name, the oldest created one will be picked.
-        /// </summary>
-        /// <param name="name">The username to search for.</param>
-        /// <param name="user">The out user if one is found.</param>
-        /// <returns>True if a user is found, false if not.</returns>
-        public bool GetUser(string name, out User? user)
-        {
-            foreach (User u in SessionUsers)
-            {
-                if (u.Username == name)
-                {
-                    user = u;
-                    return true;
-                }
-            }
-            user = null;
-            return false;
-        }
 
-        //Removing users from the list
+        /// <summary>
+        /// Removes a user from the list by its unique ID.
+        /// </summary>
+        /// <param name="id">The id of the user to remove.</param>
+        /// <returns>True or false depending on success.</returns>
         public bool RemoveUser(int id)
         {
             foreach (User u in SessionUsers)
             {
                 if (u.UserID == id)
-                {
-                    SessionUsers.Remove(u);
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public bool RemoveUser(string username)
-        {
-            foreach (User u in SessionUsers)
-            {
-                if (u.Username == username)
                 {
                     SessionUsers.Remove(u);
                     return true;

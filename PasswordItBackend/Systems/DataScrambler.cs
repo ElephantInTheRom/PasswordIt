@@ -101,7 +101,10 @@ namespace PasswordItBackend.Systems
             for(int i = 0; i < dataValues.Length; i++)
             {
                 if(keyIndex >= keyValues.Length) { keyIndex = 0; }
-                output += AllowedChars[(dataValues[i] / keyValues[keyIndex]) - 2];
+                //Make sure this index will be inside the bounds of the string
+                int charIndex = (dataValues[i] / keyValues[keyIndex]) - 2;
+                if (charIndex >= AllowedChars.Length || charIndex < 0) { output += " "; }
+                else { output += AllowedChars[charIndex]; }               
                 keyIndex++;
             }
             //Return result

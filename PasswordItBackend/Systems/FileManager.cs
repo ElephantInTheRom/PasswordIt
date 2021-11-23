@@ -16,8 +16,8 @@ namespace PasswordItBackend.Systems
         /// </summary>
         /// <typeparam name="T">The type that is stored in the list.</typeparam>
         /// <param name="filepath">The path of the file (with extension) to save to.</param>
-        /// <param name="userData">The provided list to save.</param>
-        public static void SaveList<T>(string filepath, List<T> userData)
+        /// <param name="listData">The provided list to save.</param>
+        public static void SaveList<T>(string filepath, List<T> listData)
         {
             try
             {
@@ -25,7 +25,7 @@ namespace PasswordItBackend.Systems
                 JsonSerializerOptions options = new JsonSerializerOptions() { 
                     WriteIndented = true                    
                 };
-                string jsonraw = JsonSerializer.Serialize<List<T>>(userData, options);
+                string jsonraw = JsonSerializer.Serialize<List<T>>(listData, options);
                 File.WriteAllText(filepath, jsonraw);
             }
             catch(DirectoryNotFoundException ex)

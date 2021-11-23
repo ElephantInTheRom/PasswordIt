@@ -14,7 +14,7 @@ namespace PasswordItBackend.Objects
         public string Username { get; private set; }
         public int UserID { get; private set; }
         //User validation data
-        private string EncodedKey { get; init; } 
+        public string EncodedKey { get; init; } //Does this need to be public to be included in serialization?
         [JsonIgnore] public string? OpenKey { get; private set; }
         [JsonIgnore] public bool UserValidated { get; private set; }
         //User entries
@@ -23,13 +23,13 @@ namespace PasswordItBackend.Objects
 
         //Constructors
         [JsonConstructor]
-        public User(string username, int userid, string userkey, List<LoginEntry> entries)
+        public User(string username, int userid, string encodedKey, List<LoginEntry> entries)
         {
             //This constructor will be used by the json deserializer
             Console.WriteLine("Constructor called by deserializer!");
             Username = username;
             UserID = userid;
-            EncodedKey = userkey;
+            EncodedKey = encodedKey;
             Entries = entries;
             OpenKey = null;
             UserValidated = false;
@@ -47,13 +47,35 @@ namespace PasswordItBackend.Objects
             EntriesScrambled = false;
         }
 
-        //Opening up a users data
+        // - - Lock and unlock a user and its data - -
+        /// <summary>
+        /// Locks a users data, and sets user to unvalidated state.
+        /// </summary>
+        public void LockUser()
+        {
+            if (!EntriesScrambled)
+            {
+                EncodeEntries();
+                UserValidated = false;
+                OpenKey = null;
+            }
+            else
+            {
+                Console.WriteLine("Entries already encoded.");
+            }
+        }
+        /// <summary>
+        /// Unlocks users data and sets user to a validated state.
+        /// </summary>
+        /// <param name="key">Key to use when unlocking.</param>
+        /// <returns>True or false depending on if correct key was given.</returns>
         public bool UnlockUser(string key)
-        {           
-            if (ValidateKey(key))
+        {
+            if (TestKey(key))
             {
                 Console.WriteLine("Correct key was given, unlocking data.");
-                DecodeEntries();
+                UserValidated = true;
+                DecodeEntries();              
                 return true;
             }
             else
@@ -63,14 +85,14 @@ namespace PasswordItBackend.Objects
             }
         }
 
-        //Decode and encode entries once the user has been validated with the correct key
-        public void DecodeEntries()
+        // - - Scramble and unscramble user data - - 
+        private void DecodeEntries()
         {
             if (!UserValidated) { Console.WriteLine("User is not validated! Validate before using this method!"); }
             else
             {
                 List<LoginEntry> decodedEntries = new();
-                foreach(var entry in Entries)
+                foreach (var entry in Entries)
                 {
                     var title = entry.Title;
                     var username = UnscrambleOnKey(entry.Username, OpenKey);
@@ -81,13 +103,10 @@ namespace PasswordItBackend.Objects
                 Entries = decodedEntries;
                 EntriesScrambled = false;
             }
-            
+
         }
 
-        /// <summary>
-        /// Resets the user to a state of being unvalidated, use when trying to save data and shut down the app
-        /// </summary>
-        public void EncodeAndDevalidate() 
+        private void EncodeEntries()
         {
             if (UserValidated == false) { Console.WriteLine("User data was not decoded, skipping encoding"); }
             else
@@ -102,36 +121,34 @@ namespace PasswordItBackend.Objects
                     encodedEntries.Add(e);
                 }
                 Entries = encodedEntries;
+                EntriesScrambled = true;
             }
-            //Set user to unvalidated state
-            OpenKey = null;
-            UserValidated = false;
-            EntriesScrambled = true;           
         }
 
-        //Used to validate and encode a user when one is registered or being accessed
+        // - - Encode and confirm user key - - 
         private string EncodeKey(string key) => ScrambleOnKey(key, key);
 
-        public bool ValidateKey(string key)
+        private bool TestKey(string key)
         {
             string? unscrambledKey = UnscrambleOnKey(EncodedKey, key);
-            if(unscrambledKey == null) { return false; }
-            else if(unscrambledKey == key)
+            if (unscrambledKey == null) { return false; }
+            else if (unscrambledKey == key)
             {
                 Console.WriteLine("User key validated.");
-                UserValidated = true;
                 OpenKey = key;
                 return true;
             }
             else
             {
                 Console.WriteLine("User key is not validated");
-                //Should uservalidated go to false here?
                 return false;
             }
         }
-        
-        //Methods for editing the users entry list
+
+        // - - Editing entry list - - 
+        /// <summary>
+        /// Gets and returns a string containing the whole list of user entries.
+        /// </summary>
         public string GetEntryList()
         {
             //Once data is being scrambled, there will need to be some way to decode it here.
@@ -139,14 +156,13 @@ namespace PasswordItBackend.Objects
             if (Entries.Count == 0) { return "No entries."; }
             //else
             string output = "";
-            for(int i = 0; i < Entries.Count; i++)
+            for (int i = 0; i < Entries.Count; i++)
             {
                 output += $"{i + 1}: {Entries[i].Title} : {Entries[i].Username} : {Entries[i].Password}\n";
             }
 
             return output;
         }
-
         /// <summary>
         /// Removes an entry from the users list based on the entry number.
         /// </summary>
@@ -155,14 +171,13 @@ namespace PasswordItBackend.Objects
         public bool RemoveEntry(int entryNum)
         {
             int index = entryNum - 1;
-            if(index >= Entries.Count || index < 0) { return false; }
+            if (index >= Entries.Count || index < 0) { return false; }
             else
             {
                 Entries.Remove(Entries[index]);
                 return true;
             }
         }
-
         /// <summary>
         /// Adds a new entry to the users list. Must have at least one perameter that is not blank. 
         /// </summary>
@@ -172,11 +187,11 @@ namespace PasswordItBackend.Objects
         /// <returns></returns>
         public bool AddEntry(string? title, string entryUsername, string entryPassword)
         {
-            if(title == null && entryUsername == string.Empty && entryPassword == string.Empty)
+            if (title == null && entryUsername == string.Empty && entryPassword == string.Empty)
             {
                 return false;
             }
-            else if(!UserValidated || EntriesScrambled)
+            else if (!UserValidated || EntriesScrambled)
             {
                 Console.WriteLine("This user has not been validated yet! Validate user before editing entries.");
                 return false;
@@ -189,7 +204,7 @@ namespace PasswordItBackend.Objects
             }
         }
 
-        //Methods for formatting and representing the players data
-        public override string ToString() => $"Name: {Username}, ID: {UserID}, Key: " + (OpenKey ?? "Not validated")  + ", # of entries: {Entries.Count}";
+        // - - ToString method - -
+        public override string ToString() => $"Name: {Username}, ID: {UserID}, Key: {OpenKey ?? "Not validated"}, # of entries: {Entries.Count}";
     }
 }

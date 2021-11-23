@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Coding Projects\\PasswordIt\\BackendTest\\BackendTest.csproj": {}
+    "C:\\Users\\hayde\\Documents\\GitHub\\PasswordIt\\PasswordIt\\BackendTest\\BackendTest.csproj": {}
   },
   "projects": {
-    "D:\\Coding Projects\\PasswordIt\\BackendTest\\BackendTest.csproj": {
+    "C:\\Users\\hayde\\Documents\\GitHub\\PasswordIt\\PasswordIt\\BackendTest\\BackendTest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Coding Projects\\PasswordIt\\BackendTest\\BackendTest.csproj",
+        "projectUniqueName": "C:\\Users\\hayde\\Documents\\GitHub\\PasswordIt\\PasswordIt\\BackendTest\\BackendTest.csproj",
         "projectName": "BackendTest",
-        "projectPath": "D:\\Coding Projects\\PasswordIt\\BackendTest\\BackendTest.csproj",
+        "projectPath": "C:\\Users\\hayde\\Documents\\GitHub\\PasswordIt\\PasswordIt\\BackendTest\\BackendTest.csproj",
         "packagesPath": "C:\\Users\\hayde\\.nuget\\packages\\",
-        "outputPath": "D:\\Coding Projects\\PasswordIt\\BackendTest\\obj\\",
+        "outputPath": "C:\\Users\\hayde\\Documents\\GitHub\\PasswordIt\\PasswordIt\\BackendTest\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
           "C:\\Users\\hayde\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
@@ -32,8 +34,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "D:\\Coding Projects\\PasswordIt\\PasswordItBackend\\PasswordItBackend.csproj": {
-                "projectPath": "D:\\Coding Projects\\PasswordIt\\PasswordItBackend\\PasswordItBackend.csproj"
+              "C:\\Users\\hayde\\Documents\\GitHub\\PasswordIt\\PasswordIt\\PasswordItBackend\\PasswordItBackend.csproj": {
+                "projectPath": "C:\\Users\\hayde\\Documents\\GitHub\\PasswordIt\\PasswordIt\\PasswordItBackend\\PasswordItBackend.csproj"
               }
             }
           }
@@ -84,22 +86,24 @@
         }
       }
     },
-    "D:\\Coding Projects\\PasswordIt\\PasswordItBackend\\PasswordItBackend.csproj": {
+    "C:\\Users\\hayde\\Documents\\GitHub\\PasswordIt\\PasswordIt\\PasswordItBackend\\PasswordItBackend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Coding Projects\\PasswordIt\\PasswordItBackend\\PasswordItBackend.csproj",
+        "projectUniqueName": "C:\\Users\\hayde\\Documents\\GitHub\\PasswordIt\\PasswordIt\\PasswordItBackend\\PasswordItBackend.csproj",
         "projectName": "PasswordItBackend",
-        "projectPath": "D:\\Coding Projects\\PasswordIt\\PasswordItBackend\\PasswordItBackend.csproj",
+        "projectPath": "C:\\Users\\hayde\\Documents\\GitHub\\PasswordIt\\PasswordIt\\PasswordItBackend\\PasswordItBackend.csproj",
         "packagesPath": "C:\\Users\\hayde\\.nuget\\packages\\",
-        "outputPath": "D:\\Coding Projects\\PasswordIt\\PasswordItBackend\\obj\\",
+        "outputPath": "C:\\Users\\hayde\\Documents\\GitHub\\PasswordIt\\PasswordIt\\PasswordItBackend\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
           "C:\\Users\\hayde\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"

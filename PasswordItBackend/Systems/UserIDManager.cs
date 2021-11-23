@@ -7,12 +7,25 @@ namespace PasswordItBackend.Systems
     public static class UserIDManager
     {
         private static List<int> ActiveIDs { get; set; }
+        private static readonly string SAVEFILE = DataPaths.DataDirectory + @"UserIds.json";
 
         static UserIDManager()
         {
-            //Right now the id list resets upon program termination, 
-            //In the future the class will read from a file of in use ids and set the list to those
-            ActiveIDs = new();
+            try
+            {
+                ActiveIDs = FileManager.LoadList<int>(SAVEFILE);
+            }
+            catch(FileNotFoundException ex)
+            {
+                Console.WriteLine("No user id file found, using new list.");
+                ActiveIDs = new();
+            }
+        }
+
+        // - - Saving used IDs - - 
+        public static void SaveIDList()
+        {
+            FileManager.SaveList(SAVEFILE, ActiveIDs);
         }
 
         //ID Generation and retrivial
@@ -30,6 +43,7 @@ namespace PasswordItBackend.Systems
                 newid = random.Next(1000, 10000); //This gives 9,000 possible IDs
             }
             while (ActiveIDs.Contains(newid));
+            ActiveIDs.Add(newid);
             return newid;
         }
 
