@@ -1,6 +1,4 @@
 ﻿using PasswordItBackend.Systems;
-using System;
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using static PasswordItBackend.Systems.DataScrambler;
 
@@ -26,7 +24,7 @@ namespace PasswordItBackend.Objects
         public User(string username, int userid, string encodedKey, List<LoginEntry> entries)
         {
             //This constructor will be used by the json deserializer
-            Console.WriteLine("Constructor called by deserializer!");
+            //Console.WriteLine("Constructor called by deserializer!");
             Username = username;
             UserID = userid;
             EncodedKey = encodedKey;
@@ -59,10 +57,6 @@ namespace PasswordItBackend.Objects
                 UserValidated = false;
                 OpenKey = null;
             }
-            else
-            {
-                Console.WriteLine("Entries already encoded.");
-            }
         }
         /// <summary>
         /// Unlocks users data and sets user to a validated state.
@@ -73,14 +67,14 @@ namespace PasswordItBackend.Objects
         {
             if (TestKey(key))
             {
-                Console.WriteLine("Correct key was given, unlocking data.");
+                //Console.WriteLine("Correct key was given, unlocking data.");
                 UserValidated = true;
                 DecodeEntries();              
                 return true;
             }
             else
             {
-                Console.WriteLine("Key entered was not correct.");
+                //Console.WriteLine("Key entered was not correct.");
                 return false;
             }
         }
@@ -108,8 +102,7 @@ namespace PasswordItBackend.Objects
 
         private void EncodeEntries()
         {
-            if (UserValidated == false) { Console.WriteLine("User data was not decoded, skipping encoding"); }
-            else
+            if(UserValidated)
             {
                 List<LoginEntry> encodedEntries = new();
                 foreach (var entry in Entries)
@@ -134,13 +127,13 @@ namespace PasswordItBackend.Objects
             if (unscrambledKey == null) { return false; }
             else if (unscrambledKey == key)
             {
-                Console.WriteLine("User key validated.");
+                //Console.WriteLine("User key validated.");
                 OpenKey = key;
                 return true;
             }
             else
             {
-                Console.WriteLine("User key is not validated");
+                //Console.WriteLine("User key is not validated");
                 return false;
             }
         }
@@ -167,41 +160,28 @@ namespace PasswordItBackend.Objects
         /// Removes an entry from the users list based on the entry number.
         /// </summary>
         /// <param name="entryNum">The entry number to remove. This is not the index, it is the num that appears with the entry.</param>
-        /// <returns>True or False depending on success.</returns>
-        public bool RemoveEntry(int entryNum)
+        public void RemoveEntry(int entryNum)
         {
             int index = entryNum - 1;
-            if (index >= Entries.Count || index < 0) { return false; }
-            else
-            {
-                Entries.Remove(Entries[index]);
-                return true;
-            }
+            if (index >= Entries.Count || index < 0) 
+                throw new IndexOutOfRangeException("That entry number does not exist and is outside the bounds of the array.");
+            //
+            Entries.Remove(Entries[index]);
         }
         /// <summary>
-        /// Adds a new entry to the users list. Must have at least one perameter that is not blank. 
+        /// Adds a new entry to the users list. Must have at least one parameter that is not blank. 
         /// </summary>
         /// <param name="title">The title of the entry, can be blank.</param>
         /// <param name="entryUsername">The username field for the entry.</param>
         /// <param name="entryPassword">The password or passkey feild for the entry.</param>
-        /// <returns></returns>
-        public bool AddEntry(string? title, string entryUsername, string entryPassword)
+        public void AddEntry(string? title, string entryUsername, string entryPassword)
         {
             if (title == null && entryUsername == string.Empty && entryPassword == string.Empty)
-            {
-                return false;
-            }
-            else if (!UserValidated || EntriesScrambled)
-            {
-                Console.WriteLine("This user has not been validated yet! Validate user before editing entries.");
-                return false;
-            }
-            else
-            {
-                //This should be where encoding and decoding of entry data takes place, once it is ready
-                Entries.Add(new LoginEntry(title ?? "New Entry", entryUsername, entryPassword, false));
-                return true;
-            }
+                throw new ArgumentException("Cannot create an entry with empty properties!");
+            if (!UserValidated || EntriesScrambled)
+                throw new UserNotValidatedException("The user has not been validated yet, please validate before accessing data.", this);
+            //
+            Entries.Add(new LoginEntry(title ?? "New Entry", entryUsername, entryPassword, false));
         }
 
         // - - ToString method - -

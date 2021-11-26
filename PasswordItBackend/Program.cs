@@ -1,4 +1,5 @@
 ﻿using PasswordItBackend;
+global using PasswordItBackend.Exceptions;
 using PasswordItBackend.Objects;
 using PasswordItBackend.Systems;
 using static PasswordItBackend.CommandConfig;
@@ -102,8 +103,7 @@ void AddEntry()
     else
     {
         Console.WriteLine("Not enough data provided, please try again");
-    }
-    
+    }   
 }
 
 void RemoveEntry(string command)

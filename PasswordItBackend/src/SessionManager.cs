@@ -28,8 +28,6 @@ namespace PasswordItBackend
             SessionUsers = userData;
         }
 
-        
-
         // - - Closing and opening up user data - - 
         public void OpenSessionFromFile(string filepath)
         {
