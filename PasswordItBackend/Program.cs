@@ -1,5 +1,5 @@
-﻿using PasswordItBackend;
-global using PasswordItBackend.Exceptions;
+﻿global using PasswordItBackend.Exceptions;
+using PasswordItBackend;
 using PasswordItBackend.Objects;
 using PasswordItBackend.Systems;
 using static PasswordItBackend.CommandConfig;
@@ -96,11 +96,12 @@ void AddEntry()
         return;
     }
 
-    if (selectedUser.AddEntry(entryTitle, entryUsername, entryPassword))
+    try
     {
+        selectedUser.AddEntry(entryTitle, entryUsername, entryPassword);
         Console.WriteLine($"New entry added");
     }
-    else
+    catch (Exception ex)
     {
         Console.WriteLine("Not enough data provided, please try again");
     }   
@@ -119,8 +120,9 @@ void RemoveEntry(string command)
     {
         string sub = command[(index + 1)..];
         int entryNum;
-        if (int.TryParse(sub, out entryNum) && selectedUser.RemoveEntry(entryNum))
+        if (int.TryParse(sub, out entryNum))
         {
+            selectedUser.RemoveEntry(entryNum);
             Console.WriteLine($"Removed entry {entryNum}.");
         }
         else
