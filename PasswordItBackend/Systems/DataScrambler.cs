@@ -8,14 +8,6 @@ namespace PasswordItBackend.Systems
 {
     public static class DataScrambler
     {
-        /*
-            The responsibilities of this class are to:
-            - Scramble and return data based on a raw key
-            - Unscramble and return data based on a raw key
-            - Confirm key with a scrambled key and a new key
-            - Read strings and look for allowed characters
-        */
-
         //Charcter collections for scrambling use
         //When processing char values as numbers, all values have to be >1
         private const string AllowedChars = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!?@#$%^&*()-_+=/,.:;<>~`";
@@ -32,7 +24,7 @@ namespace PasswordItBackend.Systems
             }
         }
 
-        //Methods for confirming or comparing data
+        // - - - Validating and Confirming - - -
         public static bool CharAllowed(char c) => AllowedChars.Contains(c);
         public static bool StringAllowed(string s)
         {
@@ -43,7 +35,17 @@ namespace PasswordItBackend.Systems
             return true;
         }
 
-        //Methods for scrambling or unscrambling data
+        public static string CutUnallowedChars(string s)
+        {
+            string allStr = string.Empty;
+            foreach (char c in s)
+            {
+                if (CharAllowed(c)) { allStr += c; }
+            }
+            return allStr;
+        }
+
+        // - - - Scrambling and unscrambling data - - - TODO: This probably should throw exceptions, not just return nulls
         public static string? ScrambleOnKey(string data, string key)
         {
             if(data == null || data.Length < 1 || key == null || key.Length < 1)
@@ -110,5 +112,17 @@ namespace PasswordItBackend.Systems
             //Return result
             return output;
         }
+
+        public static string GenerateScrambledMasterKey(string userKey)
+        {
+            string? scrambledMasterKey = ScrambleOnKey(ScramblerMaster, userKey);
+            if(scrambledMasterKey == null) { 
+                throw new ArgumentNullException("scrambledMasterKey", "The data scramble and unscramble methods are not set up right and should throw exceptions rather than returning nulls"); }
+            return scrambledMasterKey;
+        }
+
+        //Scramblers Key Allows us to validate user login by checking if their scrambled master key matches when scrambled with an attempted password
+        //This should not be changed at any time during writing after: 1/3/22 
+        private const string ScramblerMaster = "pEh&gw9=saDF2Y$BxTmc-J@?V!y6AgM41-lb8UAPjKB84n&Gi8&*d6nt!1Buhgt5XQlRgnJMSR49uTV^if?sbLS^zC&=rW0MOi$DCxZNNNoV6S12f7a&Q0-0xWw&kNs%9EAx&vn%KPvqkKmNbSLX0Xx&zPgQx3-S-=VGwt_%QKqrInRnl2J%Kg6e?2*ayMq$l@&1cY@lsYZ&So5hNKPdwd*$STN66Dx^opWf&-%%IQ9-m2ykd=1GxXsiCyFkD";
     }
 }

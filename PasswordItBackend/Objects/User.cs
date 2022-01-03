@@ -8,23 +8,24 @@ namespace PasswordItBackend.Objects
 {
     public class User
     {
-        //User data
+        // - - User data
         public string Username { get; private set; }
         public int UserID { get; private set; }
-        //User validation data
-        public string EncodedKey { get; init; } //Does this need to be public to be included in serialization?
-        [JsonIgnore] public string? OpenKey { get; private set; }
-        [JsonIgnore] public bool UserValidated { get; private set; }
-        //User entries
-        [JsonIgnore] public bool EntriesScrambled { get; private set; }
         public List<LoginEntry> Entries { get; private set; }
 
-        //Constructors
+        // - - User validation data
+        private string EncodedKey { get; init; } //The Scramblers master key encoded with this users password
+        [JsonIgnore] private string? OpenKey { get; set; } //Once the user is unlocked, the users password
+
+        // - - User state
+        [JsonIgnore] public bool UserValidated { get; private set; }
+        [JsonIgnore] public bool EntriesScrambled { get; private set; }
+
+        // - - Constructors - - 
         [JsonConstructor]
         public User(string username, int userid, string encodedKey, List<LoginEntry> entries)
         {
             //This constructor will be used by the json deserializer
-            //Console.WriteLine("Constructor called by deserializer!");
             Username = username;
             UserID = userid;
             EncodedKey = encodedKey;
@@ -39,16 +40,13 @@ namespace PasswordItBackend.Objects
             Entries = new();
             Username = username;
             UserID = UserIDManager.GenerateUniqueID();
-            EncodedKey = EncodeKey(key);
+            EncodedKey = EncodeKey(key); //TODO : Change the name of this to better fit what it is and then change its logic
             OpenKey = key;
             UserValidated = true;
             EntriesScrambled = false;
         }
 
         // - - Lock and unlock a user and its data - -
-        /// <summary>
-        /// Locks a users data, and sets user to unvalidated state.
-        /// </summary>
         public void LockUser()
         {
             if (!EntriesScrambled)
@@ -58,11 +56,7 @@ namespace PasswordItBackend.Objects
                 OpenKey = null;
             }
         }
-        /// <summary>
-        /// Unlocks users data and sets user to a validated state.
-        /// </summary>
-        /// <param name="key">Key to use when unlocking.</param>
-        /// <returns>True or false depending on if correct key was given.</returns>
+
         public bool UnlockUser(string key)
         {
             if (TestKey(key))
@@ -118,7 +112,7 @@ namespace PasswordItBackend.Objects
             }
         }
 
-        // - - Encode and confirm user key - - 
+        // - - Encode and confirm user key - - THESE DO NOT WORK AND SHOULD BE PART OF THE DATA SCRAMBLER
         private string EncodeKey(string key) => ScrambleOnKey(key, key);
 
         private bool TestKey(string key)
