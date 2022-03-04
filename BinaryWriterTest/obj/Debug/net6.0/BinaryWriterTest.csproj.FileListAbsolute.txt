@@ -1,0 +1,15 @@
+D:\Coding Projects\PasswordIt\BinaryWriterTest\bin\Debug\net6.0\BinaryWriterTest.exe
+D:\Coding Projects\PasswordIt\BinaryWriterTest\bin\Debug\net6.0\BinaryWriterTest.deps.json
+D:\Coding Projects\PasswordIt\BinaryWriterTest\bin\Debug\net6.0\BinaryWriterTest.runtimeconfig.json
+D:\Coding Projects\PasswordIt\BinaryWriterTest\bin\Debug\net6.0\BinaryWriterTest.dll
+D:\Coding Projects\PasswordIt\BinaryWriterTest\bin\Debug\net6.0\ref\BinaryWriterTest.dll
+D:\Coding Projects\PasswordIt\BinaryWriterTest\bin\Debug\net6.0\BinaryWriterTest.pdb
+D:\Coding Projects\PasswordIt\BinaryWriterTest\obj\Debug\net6.0\BinaryWriterTest.csproj.AssemblyReference.cache
+D:\Coding Projects\PasswordIt\BinaryWriterTest\obj\Debug\net6.0\BinaryWriterTest.GeneratedMSBuildEditorConfig.editorconfig
+D:\Coding Projects\PasswordIt\BinaryWriterTest\obj\Debug\net6.0\BinaryWriterTest.AssemblyInfoInputs.cache
+D:\Coding Projects\PasswordIt\BinaryWriterTest\obj\Debug\net6.0\BinaryWriterTest.AssemblyInfo.cs
+D:\Coding Projects\PasswordIt\BinaryWriterTest\obj\Debug\net6.0\BinaryWriterTest.csproj.CoreCompileInputs.cache
+D:\Coding Projects\PasswordIt\BinaryWriterTest\obj\Debug\net6.0\BinaryWriterTest.dll
+D:\Coding Projects\PasswordIt\BinaryWriterTest\obj\Debug\net6.0\ref\BinaryWriterTest.dll
+D:\Coding Projects\PasswordIt\BinaryWriterTest\obj\Debug\net6.0\BinaryWriterTest.pdb
+D:\Coding Projects\PasswordIt\BinaryWriterTest\obj\Debug\net6.0\BinaryWriterTest.genruntimeconfig.cache

@@ -6,10 +6,6 @@ using PasswordItBackend.Systems;
 
 namespace PasswordItBackend
 {
-    /// <summary>
-    /// Session manager holds data about all the user profiles stored in this session. 
-    /// Also holds behavior for setting up new user profiles and making sure all the data accosiated is correct. 
-    /// </summary>
     //Should this class be static? it works as non static but there will only need to be one reference
     public class SessionManager
     {
@@ -75,7 +71,7 @@ namespace PasswordItBackend
         /// <param name="username">The username for the account.</param>
         /// <param name="userkey">The encoding and decoding key for the account.</param>
         /// <returns>The newly created user.</returns>
-        public User CreateUser(string username, string userkey)
+        public User CreateUser(string? username, string userkey)
         {
             User newUser = new User(username, userkey);
             SessionUsers.Add(newUser);

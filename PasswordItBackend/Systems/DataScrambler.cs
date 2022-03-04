@@ -121,6 +121,15 @@ namespace PasswordItBackend.Systems
             return scrambledMasterKey;
         }
 
+        public static bool ConfirmKeyAttempt(string keyAttm, string scrMasterKey)
+        {
+            string? scrambledMasterKeyAttm = ScrambleOnKey(ScramblerMaster, keyAttm);
+            if (scrambledMasterKeyAttm == null) {
+                throw new ArgumentNullException("scrambledMasterKey", "The data scramble and unscramble methods are not set up right and should throw exceptions rather than returning nulls");
+            }
+            return scrMasterKey.Equals(scrambledMasterKeyAttm);
+        }
+
         //Scramblers Key Allows us to validate user login by checking if their scrambled master key matches when scrambled with an attempted password
         //This should not be changed at any time during writing after: 1/3/22 
         private const string ScramblerMaster = "pEh&gw9=saDF2Y$BxTmc-J@?V!y6AgM41-lb8UAPjKB84n&Gi8&*d6nt!1Buhgt5XQlRgnJMSR49uTV^if?sbLS^zC&=rW0MOi$DCxZNNNoV6S12f7a&Q0-0xWw&kNs%9EAx&vn%KPvqkKmNbSLX0Xx&zPgQx3-S-=VGwt_%QKqrInRnl2J%Kg6e?2*ayMq$l@&1cY@lsYZ&So5hNKPdwd*$STN66Dx^opWf&-%%IQ9-m2ykd=1GxXsiCyFkD";

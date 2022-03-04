@@ -65,5 +65,20 @@ namespace BackendTest
             //Assert
             Assert.AreEqual(input, unscrambled, $"Scrambled data looked like: {scrambled}\nUnscrambled data looked like: {unscrambled}");
         }
+
+        [TestMethod]
+        public void CanConfirmPassword()
+        {
+            //Arrange
+            string password = "apples@715";
+            string scrMasterKey;
+            //Act
+            scrMasterKey = DataScrambler.GenerateScrambledMasterKey(password);
+            //Assert
+            Assert.IsTrue(DataScrambler.ConfirmKeyAttempt("apples@715", scrMasterKey), "Key confirm did not work with string with exact contents.");
+            Assert.IsTrue(DataScrambler.ConfirmKeyAttempt(password, scrMasterKey), "Key confirm did not work with exact password variable.");
+            Assert.IsFalse(DataScrambler.ConfirmKeyAttempt("apples@714", scrMasterKey), "Key confirm threw false positive with similar password!");
+            Assert.IsFalse(DataScrambler.ConfirmKeyAttempt("blahblahblah!!!*^#^", scrMasterKey), "Key confirm threw false positive with completely unrelated password!");
+        }
     }
 }

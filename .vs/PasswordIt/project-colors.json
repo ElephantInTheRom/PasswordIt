@@ -15,7 +15,12 @@
       "ProjectGuid": "363e13cd-732f-4c2a-a673-89e89ba33c6e",
       "DisplayName": "BackendTest",
       "ColorIndex": 1
+    },
+    "214e1188-9aba-4aea-b767-e6a96d3a152f": {
+      "ProjectGuid": "214e1188-9aba-4aea-b767-e6a96d3a152f",
+      "DisplayName": "BinaryWriterTest",
+      "ColorIndex": 2
     }
   },
-  "NextColorIndex": 2
+  "NextColorIndex": 3
 }

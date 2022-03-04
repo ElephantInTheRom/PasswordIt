@@ -200,13 +200,19 @@ void RemoveUser(string command)
 
 void CreateUser()
 {
-    string name;
-    string key;
+    string? name;
+    string? key;
 
-    Console.WriteLine("Enter new name for the user . . .");
+    Console.WriteLine("Enter a name for the new user:");
     name = Console.ReadLine();
-    Console.WriteLine("Enter new key for the user . . .");
-    key = Console.ReadLine();
+    if (string.IsNullOrWhiteSpace(name)) { name = null; }
+
+    Console.WriteLine("Enter a master password for the new user:");
+    do {
+        Console.WriteLine("Use only allowed characters (a-z, A-Z, 0-9, !?@#$%^&*");
+        key = Console.ReadLine();       
+    } while(key == null || !DataScrambler.StringAllowed(key));
+    
 
     var newUser = session.CreateUser(name, key);
 
